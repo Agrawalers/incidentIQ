@@ -1,0 +1,22 @@
+# -------- Python --------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.env
+
+# -------- Node / Frontend --------
+node_modules/
+dist/
+.vite/
+
+# -------- OS --------
+.DS_Store
+
+# -------- IDE --------
+.vscode/
+.idea/
+
+# -------- Logs --------
+*.log

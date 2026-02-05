@@ -1,0 +1,25 @@
+RUNBOOK-DB-01:
+If database connection pool is exhausted:
+1. Check number of active DB connections
+2. Restart the affected service
+3. Increase DB connection pool size
+4. Monitor DB performance metrics
+
+RUNBOOK-MEM-01:
+If service crashes due to OutOfMemory errors:
+1. Capture heap dump if possible
+2. Restart the service
+3. Increase memory allocation
+4. Investigate and fix memory leaks
+
+RUNBOOK-NET-01:
+If external API timeouts occur:
+1. Check third-party service status
+2. Enable retry logic with backoff
+3. Switch to backup provider if available
+
+RUNBOOK-INFRA-01:
+If service returns 503 errors under load:
+1. Check autoscaling configuration
+2. Increase minimum replicas
+3. Monitor CPU and memory usage

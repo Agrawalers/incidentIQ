@@ -1,0 +1,334 @@
+[
+  {
+    "id": "INC-1001",
+    "service": "auth-service",
+    "error": "Database connection pool exhausted",
+    "root_cause": "Sudden spike in concurrent login requests exhausted available DB connections",
+    "resolution": "Restarted service and increased database connection pool size"
+  },
+  {
+    "id": "INC-1002",
+    "service": "payment-service",
+    "error": "Timeout while calling third-party payment gateway",
+    "root_cause": "External payment provider experienced high latency",
+    "resolution": "Enabled retries and switched traffic to backup payment provider"
+  },
+
+   {
+    "id": "INC-1002",
+    "service": "payment-service",
+    "error": "Timeout while calling third-party payment gateway",
+    "root_cause": "External payment provider experienced high latency",
+    "resolution": "Enabled retries and switched traffic to backup payment provider"
+  },
+  {
+    "id": "INC-1003",
+    "service": "user-service",
+    "error": "OutOfMemoryError in JVM",
+    "root_cause": "Memory leak caused by unclosed user session objects",
+    "resolution": "Restarted service, increased heap size, and deployed hotfix"
+  },
+  {
+    "id": "INC-1004",
+    "service": "order-service",
+    "error": "Kafka consumer lag increasing rapidly",
+    "root_cause": "Consumer instances could not keep up with message ingestion rate",
+    "resolution": "Scaled consumer instances and optimized message processing"
+  },
+  {
+    "id": "INC-1005",
+    "service": "inventory-service",
+    "error": "HTTP 503 errors under load",
+    "root_cause": "Service autoscaling was misconfigured",
+    "resolution": "Fixed autoscaling policy and increased minimum replicas"
+  },
+  {
+    "id": "INC-1006",
+    "service": "search-service",
+    "error": "Elasticsearch cluster in Yellow state",
+    "root_cause": "One of the data nodes ran out of disk space, preventing shard allocation",
+    "resolution": "Cleared old indices and increased EBS volume size on the affected node"
+  },
+  {
+    "id": "INC-1007",
+    "service": "notification-service",
+    "error": "SMTP server connection timed out",
+    "root_cause": "Firewall rule change blocked port 587 from the application subnet",
+    "resolution": "Reverted firewall rule and added automated security group audit"
+  },
+  {
+    "id": "INC-1008",
+    "service": "api-gateway",
+    "error": "Increased rate of 401 Unauthorized responses",
+    "root_cause": "Redis cache for session tokens became unavailable due to Out-Of-Memory (OOM)",
+    "resolution": "Flushed Redis cache, increased memory limit, and changed eviction policy to volatile-lru"
+  },
+  {
+    "id": "INC-1009",
+    "service": "shipping-service",
+    "error": "Invalid API Key error for FedEx integration",
+    "root_cause": "Secrets manager rotated credentials but the service failed to reload them",
+    "resolution": "Force-restarted service pods to pull latest environment variables"
+  },
+  {
+    "id": "INC-1010",
+    "service": "frontend-app",
+    "error": "Bundle size exceeded warning; slow LCP",
+    "root_cause": "New heavy library imported without tree-shaking",
+    "resolution": "Removed unused imports and implemented route-based code splitting"
+  },
+  {
+    "id": "INC-1011",
+    "service": "logging-pipeline",
+    "error": "Logstash pipeline stalled",
+    "root_cause": "Backpressure from downstream S3 bucket due to rate limits",
+    "resolution": "Increased S3 request concurrency and added local buffer disk"
+  },
+  {
+    "id": "INC-1012",
+    "service": "recommendation-engine",
+    "error": "Prediction latency > 500ms",
+    "root_cause": "Model feature store lookup became slow due to unindexed query",
+    "resolution": "Added composite index to DynamoDB feature table"
+  },
+  {
+    "id": "INC-1013",
+    "service": "billing-service",
+    "error": "Duplicate invoice generation",
+    "root_cause": "Race condition in message processing; lack of idempotency key",
+    "resolution": "Implemented idempotency keys at the database level and ran cleanup script"
+  },
+  {
+    "id": "INC-1014",
+    "service": "config-service",
+    "error": "Stale configuration distributed to cluster",
+    "root_cause": "Zookeeper leader election failure caused sync delay",
+    "resolution": "Manually triggered leader re-election and increased tickTime"
+  },
+  {
+    "id": "INC-1015",
+    "service": "internal-tool-db",
+    "error": "PostgreSQL transaction ID wraparound imminent",
+    "root_cause": "Autovacuum was disabled on a high-write table",
+    "resolution": "Ran manual VACUUM FREEZE and re-enabled autovacuum"
+  },
+  {
+    "id": "INC-1016",
+    "service": "auth-service",
+    "error": "JWT signature verification failed",
+    "root_cause": "Public key rotation synchronization delay across cluster nodes",
+    "resolution": "Flushed local key cache and forced reload from JWKS endpoint"
+  },
+  {
+    "id": "INC-1017",
+    "service": "payment-api",
+    "error": "PCI compliance check failure (403)",
+    "root_cause": "TLS 1.1 traffic was deprecated but legacy clients still attempted connection",
+    "resolution": "Hardened TLS requirements to 1.2+ and notified legacy partners"
+  },
+  {
+    "id": "INC-1018",
+    "service": "database-cluster",
+    "error": "Read-replica lag > 60 seconds",
+    "root_cause": "Heavy analytical query locking tables on the leader node",
+    "resolution": "Killed long-running query and moved reporting tasks to a dedicated warehouse"
+  },
+  {
+    "id": "INC-1019",
+    "service": "k8s-ingress",
+    "error": "504 Gateway Timeout",
+    "root_cause": "Liveness probe failure caused frequent pod restarts during peak traffic",
+    "resolution": "Adjusted probe timeouts and increased CPU request limits"
+  },
+  {
+    "id": "INC-1020",
+    "service": "cdn-manager",
+    "error": "Cache purge requests failing",
+    "root_cause": "API rate limit reached on the upstream provider (Cloudflare/Akamai)",
+    "resolution": "Implemented request batching and exponential backoff for purges"
+  },
+  {
+    "id": "INC-1021",
+    "service": "ci-cd-pipeline",
+    "error": "Runner disk full; builds failing",
+    "root_cause": "Docker image pruning was not cleaning up dangling volumes",
+    "resolution": "Scheduled a daily cron job for 'docker system prune -af --volumes'"
+  },
+  {
+    "id": "INC-1022",
+    "service": "user-profile",
+    "error": "Profile pictures not loading (404)",
+    "root_cause": "S3 bucket policy was updated to remove 'GetObject' permissions",
+    "resolution": "Restored IAM policy and added a Terraform drift detection alert"
+  },
+  {
+    "id": "INC-1023",
+    "service": "search-index",
+    "error": "Search results showing stale data",
+    "root_cause": "Elasticsearch refresh interval was set too high to save on CPU",
+    "resolution": "Reduced refresh_interval and optimized indexing bulk size"
+  },
+  {
+    "id": "INC-1024",
+    "service": "messaging-queue",
+    "error": "RabbitMQ 'High Memory Watermark' reached",
+    "root_cause": "Unchecked queue growth due to consumer service downtime",
+    "resolution": "Purged dead-letter exchanges and scaled consumer pods"
+  },
+  {
+    "id": "INC-1025",
+    "service": "lambda-functions",
+    "error": "Function 'Provisioned Concurrency' exhausted",
+    "root_cause": "Unusual traffic spike from a new marketing campaign",
+    "resolution": "Increased provisioned concurrency limits and enabled Auto Scaling"
+  },
+  {
+    "id": "INC-1026",
+    "service": "dns-service",
+    "error": "Domain resolution flickering",
+    "root_cause": "TTL was set too low, causing excessive load on the recursive resolver",
+    "resolution": "Increased TTL to 3600 and updated nameserver records"
+  },
+  {
+    "id": "INC-1027",
+    "service": "monitoring-stack",
+    "error": "Prometheus scraping gaps",
+    "root_cause": "Cardinality explosion in custom metrics caused Prometheus OOM",
+    "resolution": "Dropped high-cardinality labels and increased memory allocation"
+  },
+  {
+    "id": "INC-1028",
+    "service": "storage-service",
+    "error": "IOPS throttling on production disk",
+    "root_cause": "Instance type reached its max EBS throughput limit",
+    "resolution": "Upgraded instance family (e.g., from m5.large to m5.xlarge)"
+  },
+  {
+    "id": "INC-1029",
+    "service": "internal-registry",
+    "error": "Image pull back-off",
+    "root_cause": "Registry credentials expired on the Kubernetes secret",
+    "resolution": "Refreshed service account token and patched the imagePullSecret"
+  },
+  {
+    "id": "INC-1030",
+    "service": "analytics-db",
+    "error": "Query execution time doubled",
+    "root_cause": "Statistics for the main fact table were outdated",
+    "resolution": "Ran 'ANALYZE' command and scheduled weekly stats updates"
+  },
+  {
+    "id": "INC-1031",
+    "service": "crypto-service",
+    "error": "HSM (Hardware Security Module) latency spike",
+    "root_cause": "Network congestion between the app subnet and the HSM appliance",
+    "resolution": "Rerouted traffic through a dedicated private link"
+  },
+  {
+    "id": "INC-1032",
+    "service": "geo-service",
+    "error": "Incorrect location data for IP addresses",
+    "root_cause": "Geo-location database was not updated during release",
+    "resolution": "Manually triggered database sync and automated future updates"
+  },
+  {
+    "id": "INC-1033",
+    "service": "email-service",
+    "error": "High bounce rate on transactional emails",
+    "root_cause": "SPF/DKIM records missing for the new sending subdomain",
+    "resolution": "Added TXT records for SPF/DKIM and verified via postmaster tools"
+  },
+  {
+    "id": "INC-1034",
+    "service": "session-manager",
+    "error": "Sticky session failure in Load Balancer",
+    "root_cause": "Target group deregistration delay was too short",
+    "resolution": "Increased deregistration delay to 300 seconds"
+  },
+
+  {
+    "id": "INC-1035",
+    "service": "api-docs",
+    "error": "Swagger UI failing to render",
+    "root_cause": "CORS policy blocked requests from the documentation domain",
+    "resolution": "Added docs URL to the 'Allowed Origins' list in the API config"
+  },
+  {
+  "id": "INC-1036",
+  "service": "auth-service",
+  "error": "Multiple failed login attempts detected from a single IP",
+  "root_cause": "Potential brute-force attack causing repeated authentication failures",
+  "resolution": "Blocked IP address and enabled rate limiting on authentication endpoints"
+},
+{
+  "id": "INC-1037",
+  "service": "api-gateway",
+  "error": "Expired TLS certificate caused HTTPS connection failures",
+  "root_cause": "TLS certificate was not renewed before expiry date",
+  "resolution": "Renewed TLS certificate and added certificate expiry monitoring"
+},
+{
+  "id": "INC-1038",
+  "service": "internal-network",
+  "error": "Intermittent packet loss between application and database services",
+  "root_cause": "Faulty network switch causing unstable connectivity",
+  "resolution": "Replaced faulty switch and rerouted traffic temporarily"
+},
+{
+  "id": "INC-1039",
+  "service": "load-balancer",
+  "error": "Uneven traffic distribution causing backend overload",
+  "root_cause": "Misconfigured load balancer health checks",
+  "resolution": "Corrected load balancer configuration and validated health checks"
+},
+{
+  "id": "INC-1040",
+  "service": "redis-cache",
+  "error": "Cache eviction due to memory limit reached",
+  "root_cause": "Redis max memory limit too low for current workload",
+  "resolution": "Increased memory allocation and optimized cache TTL values"
+},
+{
+  "id": "INC-1041",
+  "service": "cache-layer",
+  "error": "Cache warm-up failure after restart caused latency spike",
+  "root_cause": "Cache warm-up logic failed after service restart",
+  "resolution": "Fixed warm-up logic and added fallback to database with rate limiting"
+}
+,{
+  "id": "INC-1042",
+  "service": "user-service",
+  "error": "Service crashed on startup after deployment",
+  "root_cause": "Null pointer exception introduced in recent deployment",
+  "resolution": "Rolled back to previous stable version and fixed the null reference bug"
+}
+,{
+  "id": "INC-1043",
+  "service": "payment-service",
+  "error": "Database schema mismatch caused transaction failures",
+  "root_cause": "Application code expected a new database column that was not deployed",
+  "resolution": "Rolled back deployment and applied database migration in correct order"
+}
+,{
+  "id": "INC-1044",
+  "service": "kubernetes-cluster",
+  "error": "Single pod restarted due to temporary memory pressure",
+  "root_cause": "Transient spike in memory usage during peak traffic",
+  "resolution": "No action required as service recovered automatically"
+}
+,{
+  "id": "INC-1045",
+  "service": "monitoring-service",
+  "error": "Metrics ingestion lag caused delayed alerts",
+  "root_cause": "High ingestion load overwhelmed metrics processing pipeline",
+  "resolution": "Scaled monitoring service horizontally and optimized ingestion batching"
+}
+
+
+
+
+
+
+
+  
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "INC-1001",
+    "service": "auth-service",
+    "error": "Database connection pool exhausted"
+  },
+  {
+    "id": "INC-1002",
+    "service": "payment-service",
+    "error": "Timeout while calling third-party payment gateway"
+  },
+  {
+    "id": "INC-1002",
+    "service": "payment-service",
+    "error": "Timeout while calling third-party payment gateway"
+  },
+  {
+    "id": "INC-1003",
+    "service": "user-service",
+    "error": "OutOfMemoryError in JVM"
+  },
+  {
+    "id": "INC-1004",
+    "service": "order-service",
+    "error": "Kafka consumer lag increasing rapidly"
+  },
+  {
+    "id": "INC-1005",
+    "service": "inventory-service",
+    "error": "HTTP 503 errors under load"
+  },
+  {
+    "id": "INC-1006",
+    "service": "search-service",
+    "error": "Elasticsearch cluster in Yellow state"
+  },
+  {
+    "id": "INC-1007",
+    "service": "notification-service",
+    "error": "SMTP server connection timed out"
+  },
+  {
+    "id": "INC-1008",
+    "service": "api-gateway",
+    "error": "Increased rate of 401 Unauthorized responses"
+  },
+  {
+    "id": "INC-1009",
+    "service": "shipping-service",
+    "error": "Invalid API Key error for FedEx integration"
+  },
+  {
+    "id": "INC-1010",
+    "service": "frontend-app",
+    "error": "Bundle size exceeded warning; slow LCP"
+  },
+  {
+    "id": "INC-1011",
+    "service": "logging-pipeline",
+    "error": "Logstash pipeline stalled"
+  },
+  {
+    "id": "INC-1012",
+    "service": "recommendation-engine",
+    "error": "Prediction latency > 500ms"
+  },
+  {
+    "id": "INC-1013",
+    "service": "billing-service",
+    "error": "Duplicate invoice generation"
+  },
+  {
+    "id": "INC-1014",
+    "service": "config-service",
+    "error": "Stale configuration distributed to cluster"
+  },
+  {
+    "id": "INC-1015",
+    "service": "internal-tool-db",
+    "error": "PostgreSQL transaction ID wraparound imminent"
+  },
+  {
+    "id": "INC-1016",
+    "service": "auth-service",
+    "error": "JWT signature verification failed"
+  },
+  {
+    "id": "INC-1017",
+    "service": "payment-api",
+    "error": "PCI compliance check failure (403)"
+  },
+  {
+    "id": "INC-1018",
+    "service": "database-cluster",
+    "error": "Read-replica lag > 60 seconds"
+  },
+  {
+    "id": "INC-1019",
+    "service": "k8s-ingress",
+    "error": "504 Gateway Timeout"
+  },
+  {
+    "id": "INC-1020",
+    "service": "cdn-manager",
+    "error": "Cache purge requests failing"
+  },
+  {
+    "id": "INC-1021",
+    "service": "ci-cd-pipeline",
+    "error": "Runner disk full; builds failing"
+  },
+  {
+    "id": "INC-1022",
+    "service": "user-profile",
+    "error": "Profile pictures not loading (404)"
+  },
+  {
+    "id": "INC-1023",
+    "service": "search-index",
+    "error": "Search results showing stale data"
+  },
+  {
+    "id": "INC-1024",
+    "service": "messaging-queue",
+    "error": "RabbitMQ 'High Memory Watermark' reached"
+  },
+  {
+    "id": "INC-1025",
+    "service": "lambda-functions",
+    "error": "Function 'Provisioned Concurrency' exhausted"
+  },
+  {
+    "id": "INC-1026",
+    "service": "dns-service",
+    "error": "Domain resolution flickering"
+  },
+  {
+    "id": "INC-1027",
+    "service": "monitoring-stack",
+    "error": "Prometheus scraping gaps"
+  },
+  {
+    "id": "INC-1028",
+    "service": "storage-service",
+    "error": "IOPS throttling on production disk"
+  },
+  {
+    "id": "INC-1029",
+    "service": "internal-registry",
+    "error": "Image pull back-off"
+  },
+  {
+    "id": "INC-1030",
+    "service": "analytics-db",
+    "error": "Query execution time doubled"
+  },
+  {
+    "id": "INC-1031",
+    "service": "crypto-service",
+    "error": "HSM (Hardware Security Module) latency spike"
+  },
+  {
+    "id": "INC-1032",
+    "service": "geo-service",
+    "error": "Incorrect location data for IP addresses"
+  },
+  {
+    "id": "INC-1033",
+    "service": "email-service",
+    "error": "High bounce rate on transactional emails"
+  },
+  {
+    "id": "INC-1034",
+    "service": "session-manager",
+    "error": "Sticky session failure in Load Balancer"
+  },
+  {
+    "id": "INC-1035",
+    "service": "api-docs",
+    "error": "Swagger UI failing to render"
+  }
+]
