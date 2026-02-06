@@ -1,8 +1,21 @@
+# Tell pip to use CPU-only PyTorch wheels
+--extra-index-url https://download.pytorch.org/whl/cpu
+
 fastapi
 uvicorn
+
+# CPU-only torch (prevents CUDA downloads)
+torch==2.1.2+cpu
+
+# Keep sentence-transformers but force CPU
+sentence-transformers==5.2.2
+transformers==5.1.0
+
+# Vector search (CPU)
 faiss-cpu
+
+# Core deps
+numpy
 python-dotenv
 pydantic
 groq
-numpy
-sentence-transformers

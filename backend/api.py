@@ -1,3 +1,14 @@
+import os
+
+# Disable GPU completely
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+os.environ["TORCH_DEVICE"] = "cpu"
+
+# Keep HF cache small & ephemeral
+os.environ["HF_HOME"] = "/tmp/hf"
+os.environ["TRANSFORMERS_CACHE"] = "/tmp/hf"
+os.environ["HF_DATASETS_CACHE"] = "/tmp/hf"
+
 import json
 from pathlib import Path
 from typing import List, Dict, Any
