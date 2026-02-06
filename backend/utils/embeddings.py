@@ -1,11 +1,11 @@
 from sentence_transformers import SentenceTransformer
 
-# Load once (global, fast)
+# Load model once (cached after first load)
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 def get_embedding(text: str) -> list:
     """
-    Generate local embeddings (no API, no quota)
+    Generate embeddings using sentence-transformers
     """
     embedding = model.encode(text, normalize_embeddings=True)
     return embedding.tolist()

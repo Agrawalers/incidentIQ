@@ -178,5 +178,55 @@
     "id": "INC-1035",
     "service": "api-docs",
     "error": "Swagger UI failing to render"
+  },
+  {
+    "id": "INC-1036",
+    "service": "auth-service",
+    "error": "Multiple failed login attempts detected from a single IP"
+  },
+  {
+    "id": "INC-1037",
+    "service": "api-gateway",
+    "error": "Expired TLS certificate caused HTTPS connection failures"
+  },
+  {
+    "id": "INC-1038",
+    "service": "internal-network",
+    "error": "Intermittent packet loss between application and database services"
+  },
+  {
+    "id": "INC-1039",
+    "service": "load-balancer",
+    "error": "Uneven traffic distribution causing backend overload"
+  },
+  {
+    "id": "INC-1040",
+    "service": "redis-cache",
+    "error": "Cache eviction due to memory limit reached"
+  },
+  {
+    "id": "INC-1041",
+    "service": "cache-layer",
+    "error": "Cache warm-up failure after restart caused latency spike"
+  },
+  {
+    "id": "INC-1042",
+    "service": "user-service",
+    "error": "Service crashed on startup after deployment"
+  },
+  {
+    "id": "INC-1043",
+    "service": "payment-service",
+    "error": "Database schema mismatch caused transaction failures"
+  },
+  {
+    "id": "INC-1044",
+    "service": "kubernetes-cluster",
+    "error": "Single pod restarted due to temporary memory pressure"
+  },
+  {
+    "id": "INC-1045",
+    "service": "monitoring-service",
+    "error": "Metrics ingestion lag caused delayed alerts"
   }
 ]

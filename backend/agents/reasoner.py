@@ -1,9 +1,13 @@
 import os
+from pathlib import Path
 from groq import Groq
 from dotenv import load_dotenv
 from backend.rag.retriever import retrieve_similar_incidents
 
-load_dotenv()
+# Load .env from project root
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+load_dotenv(ROOT_DIR / ".env")
+
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 SYSTEM_PROMPT = """

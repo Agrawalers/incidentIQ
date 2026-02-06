@@ -92,7 +92,6 @@ def is_valid_incident_input(log: str) -> bool:
 
     return True
 
-
 def looks_like_incident(log: str) -> bool:
     """
     Intent gate:
@@ -101,20 +100,17 @@ def looks_like_incident(log: str) -> bool:
     """
     log_lower = log.lower().strip()
     
-    # Block obvious non-incident patterns
+    # Block obvious non-incident patterns (ONLY at start)
     non_incident_patterns = [
-        "what is", "how to", "can you", "please", "help me", "explain", 
-        "tell me", "show me", "i want", "i need", "tutorial", "guide",
-        "hello", "hi", "test", "testing", "example", "sample",
-        "who is", "where is", "when is", "why is", "which is"
+        "what is", "how to", "can you", "please help", "explain", 
+        "tell me", "show me", "i want", "i need", "tutorial",
+        "who is", "where is", "when is"
     ]
     
     # Block general knowledge/personal questions
     irrelevant_topics = [
-        "prime minister", "president", "politician", "politics", "government",
-        "celebrity", "actor", "movie", "film", "song", "music", "sports",
-        "weather", "news", "history", "geography", "science", "math",
-        "cooking", "recipe", "travel", "vacation", "personal", "family"
+        "prime minister", "president", "politician", "celebrity", "actor", 
+        "movie", "music", "sports", "weather", "cooking", "recipe"
     ]
     
     # If it contains irrelevant topics, block it
@@ -122,34 +118,36 @@ def looks_like_incident(log: str) -> bool:
         if topic in log_lower:
             return False
     
-    # If it starts with question/request patterns, likely not an incident
+    # If it starts with question patterns, block it
     for pattern in non_incident_patterns:
-        if log_lower.startswith(pattern) or f" {pattern}" in log_lower:
+        if log_lower.startswith(pattern):
             return False
     
-    # Must contain incident-related keywords
+    # Incident keywords (EXPANDED)
     incident_keywords = [
         "error", "failed", "failure", "timeout", "crash", "down",
         "latency", "unavailable", "restart", "outage", "exception",
         "memory", "cpu", "disk", "database", "service", "pod",
         "connection", "traffic", "load", "alert", "warning", "critical",
-        "500", "404", "503", "502", "429", "oom", "killed", "terminated"
+        "500", "404", "503", "502", "429", "oom", "killed", "terminated",
+        "slow", "stuck", "freeze", "hang", "unresponsive", "issue", "problem"
     ]
     
-    # Must have at least one incident keyword
-    has_incident_keyword = any(keyword in log_lower for keyword in incident_keywords)
-    
-    # Additional technical indicators
+    # Technical context (EXPANDED)
     technical_indicators = [
         "http", "api", "server", "cluster", "node", "container", "deployment",
         "pipeline", "queue", "cache", "redis", "postgres", "mysql", "nginx",
-        "kubernetes", "docker", "aws", "gcp", "azure", "lambda", "s3"
+        "kubernetes", "docker", "aws", "gcp", "azure", "lambda", "s3",
+        "browser", "tab", "tabs", "page", "screen", "session", "ui",
+        "system", "application", "app", "website", "network"
     ]
     
-    has_technical_context = any(indicator in log_lower for indicator in technical_indicators)
+    has_incident_keyword = any(k in log_lower for k in incident_keywords)
+    has_technical_context = any(t in log_lower for t in technical_indicators)
     
-    # Must have incident keywords AND some technical context
-    return has_incident_keyword and (has_technical_context or len(log.split()) > 10)
+    # More lenient: technical context OR incident keyword is enough
+    return has_technical_context or has_incident_keyword
+
 
 
 # ---------------- Health ----------------
@@ -165,6 +163,35 @@ def health_check():
 def analyze_incident_api(request: IncidentRequest):
     try:
         log = request.log
+
+        if not is_valid_incident_input(log):
+            return {
+                "classification": {
+                    "severity": "Low",
+                    "domain": "Unknown",
+                    "urgency": 1
+                },
+                "similar_incidents": [],
+                "analysis": {
+                    "is_known_issue": False,
+                    "failure_layer": "Unknown",
+                    "reasoning": "The provided input does not contain enough information to analyze an incident.",
+                    "root_cause": "Insufficient information",
+                    "fix_steps": [],
+                    "confidence": 0.1
+                },
+                "validation": {
+                    "is_valid": False,
+                    "issues_found": ["Input lacks sufficient detail"],
+                    "adjusted_confidence": 0.1,
+                    "review_notes": "Input too short or not a valid incident description."
+                },
+                "final_verdict": {
+                    "confidence_level": "Low",
+                    "recommended_action": "Human Review Required",
+                    "reason": "Insufficient input signal"
+                }
+            }
         # ---------- INTENT GATE ----------
         if not looks_like_incident(log):
             return {
@@ -195,50 +222,53 @@ def analyze_incident_api(request: IncidentRequest):
                 }
             }
 
-        # ---------- SANITY GATE ----------
-        if not is_valid_incident_input(log):
-            return {
-                "classification": {
-                    "severity": "Low",
-                    "domain": "Unknown",
-                    "urgency": 1
-                },
-                "similar_incidents": [],
-                "analysis": {
-                    "is_known_issue": False,
-                    "failure_layer": "Unknown",
-                    "reasoning": "The provided input does not contain enough information to analyze an incident.",
-                    "root_cause": "Insufficient information",
-                    "fix_steps": [],
-                    "confidence": 0.1
-                },
-                "validation": {
-                    "is_valid": False,
-                    "issues_found": ["Input lacks sufficient detail"],
-                    "adjusted_confidence": 0.1,
-                    "review_notes": "Input too short or not a valid incident description."
-                },
-                "final_verdict": {
-                    "confidence_level": "Low",
-                    "recommended_action": "Human Review Required",
-                    "reason": "Insufficient input signal"
-                }
-            }
+        
 
 
         # ---------- NORMAL PIPELINE ----------
 
-        classification = json.loads(classify_incident(log))
+        try:
+            classification = json.loads(classify_incident(log))
+        except json.JSONDecodeError as e:
+            raise HTTPException(status_code=500, detail=f"Classifier JSON error: {str(e)}")
 
-        similar_incidents = retrieve_similar_incidents(log)
+        try:
+            similar_incidents = retrieve_similar_incidents(log)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"RAG retrieval error: {str(e)}")
 
-        analysis_raw = analyze_incident(
-            log=log,
-            similar_incidents=similar_incidents,
-            runbooks=RUNBOOKS
-        )
-
-        analysis = json.loads(analysis_raw)
+        try:
+            analysis_raw = analyze_incident(
+                log=log,
+                similar_incidents=similar_incidents,
+                runbooks=RUNBOOKS
+            )
+            analysis = json.loads(analysis_raw)
+        except json.JSONDecodeError as e:
+            # LLM sometimes returns invalid JSON - return safe fallback
+            return {
+                "classification": classification,
+                "similar_incidents": similar_incidents,
+                "analysis": {
+                    "is_known_issue": False,
+                    "failure_layer": "Unknown",
+                    "reasoning": "The AI model encountered an issue analyzing this incident. Please review manually.",
+                    "root_cause": "Analysis incomplete - LLM response error",
+                    "fix_steps": ["Manual investigation required"],
+                    "confidence": 0.3
+                },
+                "validation": {
+                    "is_valid": False,
+                    "issues_found": ["AI analysis failed to complete"],
+                    "adjusted_confidence": 0.3,
+                    "review_notes": "The reasoning agent encountered an error. Human review is required."
+                },
+                "final_verdict": {
+                    "confidence_level": "Low",
+                    "recommended_action": "Human Review Required",
+                    "reason": "AI analysis incomplete - manual review needed"
+                }
+            }
 
         # Confidence calibration (critical)
         analysis["confidence"] = calibrate_confidence(
@@ -248,9 +278,12 @@ def analyze_incident_api(request: IncidentRequest):
         )
 
         # Validator must see calibrated analysis
-        validation = json.loads(
-            validate_analysis(log, json.dumps(analysis))
-        )
+        try:
+            validation = json.loads(
+                validate_analysis(log, json.dumps(analysis))
+            )
+        except json.JSONDecodeError as e:
+            raise HTTPException(status_code=500, detail=f"Validator JSON error: {str(e)}")
 
         final_verdict = make_final_verdict(
             analysis=analysis,
